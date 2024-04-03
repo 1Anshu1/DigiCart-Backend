@@ -2,6 +2,16 @@ import { Schema, model, Types } from "mongoose";
 
 const addressSchema = new Schema(
     {
+        name: {
+            type: String,
+            required: [true, "Please provide the name"],
+        },
+        mobile: {
+            type: String,
+            required: [true, "Please provide the mobile"],
+            minLength: 10,
+            maxLength: 10,
+        },
         street: {
             type: String,
             required: [true, "Please provide the street"],
@@ -24,9 +34,9 @@ const addressSchema = new Schema(
         },
         user: {
             type: Types.ObjectId,
-            ref: 'User',
-            required: true
-        }
+            ref: "User",
+            required: true,
+        },
     },
     { timestamps: true }
 );

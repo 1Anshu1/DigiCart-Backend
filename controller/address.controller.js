@@ -8,16 +8,16 @@ import ApiError from "../utils/apiError.util.js";
 // get all address
 const getAddress = asyncWrapper(async (req, res, next) => {
     const user_id = req.user.id;
-    const address = await Address.find({ user: user_id }).populate('user');
+    const address = await Address.find({ user: user_id });
     res.status(200).json({ success: true, address });
 });
 
 // add address
 const addAddress = asyncWrapper(async (req, res, next) => {
     const user_id = req.user.id;
-    const { street, city, state, country, zipcode } = req.body;
+    const { name, mobile, street, city, state, country, zipcode } = req.body;
 
-    if (!street || !city || !state || !country || !zipcode) {
+    if (!name || !mobile || !street || !city || !state || !country || !zipcode) {
         throw next(new ApiError(400, "Required field missing"));
     }
     req.body.user = user_id;
