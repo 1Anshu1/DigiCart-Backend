@@ -1,14 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 import cors from 'cors'
 
-
-dotenv.config()
 // middleware
 import errorMiddleware from './middleware/error.middleware.js'
 import notFound from './middleware/notFound.middleware.js'
-import ApiError from './utils/apiError.util.js'
 
 // routes
 import authRoute from './routes/auth.route.js'
@@ -20,10 +16,9 @@ import orderRoute from './routes/order.route.js'
 import addressRoute from './routes/address.route.js'
 import paymentRoute from './routes/payment.route.js'
 
-
 const app = express()
 
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
 
