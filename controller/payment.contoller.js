@@ -2,6 +2,7 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 
 import Order from "../model/order.model.js";
+import Product from "../model/product.model.js";
 
 const razorpay = new Razorpay({
     key_id: process.env.APP_RAZORPAY_KEY_ID,
@@ -41,8 +42,8 @@ const checkout = async (req, res) => {
         clientSecret: "mockClientSecret",
         paymentIntentId: "mockPaymentIntentId",
         order_id: order.id,
-        user:  cart.user,
-        total: options.amount / 100
+        user: cart.user,
+        total: options.amount / 100,
     });
     const savedOrder = await newOrder.save();
     res.status(200).json({ success: "success", order });
@@ -56,14 +57,14 @@ const verifypayment = async (req, res) => {
 
     const expect = crypto.createHmac("sha256", secret).update(body_data).digest("hex");
     const isValid = expect === razorpay_signature;
-    console.isValid
+    console.isValid;
     if (isValid) {
         try {
-            await Order.findOneAndUpdate(
+            const order = await Order.findOneAndUpdate(
                 { order_id: razorpay_order_id },
                 {
                     $set: {
-                        paymentStatus: 'paid',
+                        paymentStatus: "paid",
                         razorpay_payment_id: razorpay_payment_id,
                         razorpay_order_id: razorpay_order_id,
                         razorpay_signature: razorpay_signature,
@@ -71,13 +72,18 @@ const verifypayment = async (req, res) => {
                 },
                 { new: true }
             );
+            order.cartItems.map(async (item) => {
+                const product = await Product.findOne({ _id: item.product });
+                product.quantity -= Number(item.quantity);
+                await product.save()
+            });
         } catch (error) {
             console.error("Error updating order:", error);
             // Handle error appropriately
         }
         res.redirect("http://localhost:5173/success");
     } else {
-        await Order.findOneAndDelete({order_id: razorpay_order_id})
+        await Order.findOneAndDelete({ order_id: razorpay_order_id });
         res.redirect("http://localhost:5173/failed");
     }
 };

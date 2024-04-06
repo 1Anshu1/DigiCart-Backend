@@ -34,7 +34,7 @@ export const getAllProducts = asyncWrapper(async (req, res, next) => {
     }
     
     
-    const products = await Product.find({category: req.params.category, ...filterQuery}).select('name price averageRating numOfReview brand image').sort(sortParam)
+    const products = await Product.find({category: req.params.category, ...filterQuery}).select('name price averageRating numOfReview brand image quantity').sort(sortParam)
     res.status(200).json({count: products.length, products})
 })
 
