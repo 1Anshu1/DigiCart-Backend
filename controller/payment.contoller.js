@@ -36,7 +36,7 @@ const checkout = async (req, res) => {
     const newOrder = new Order({
         shippingFee: 100,
         cartItems: arrayofcartitems,
-        status: "pending",
+        status: "processing",
         paymentStatus: "not paid",
         clientSecret: "mockClientSecret",
         paymentIntentId: "mockPaymentIntentId",

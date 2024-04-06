@@ -1,12 +1,6 @@
 import {Schema, model, Types} from 'mongoose';
 
 const reviewSchema = new Schema({
-    title: {
-        type: String,
-        required: [true, 'Please provide the title'],
-        trim: true,
-        maxlength: [20, 'title cannot exceed 20 character']
-    },
     rating: {
         type: Number,
         required: [true, 'Please provide the rating'],

@@ -1,15 +1,10 @@
-import express from 'express'
-import { getAllReview, getReview, createReview, updateReview, deleteReview } from '../controller/review.controller.js'
-import { authentication } from '../middleware/authentication.middleware.js'
-const router = express.Router()
+import express from "express";
+import { createReview, getProductReview } from "../controller/review.controller.js";
+import { authentication } from "../middleware/authentication.middleware.js";
+const router = express.Router();
 
-router.route('/')
-    .get(getAllReview)
-    .post(authentication, createReview)
+router.route("/").post(authentication, createReview);
 
-router.route('/:id')
-    .get(getReview)
-    .patch(authentication, updateReview)
-    .delete(authentication, deleteReview)
+router.route("/:productId").get(getProductReview);
 
-export default router
+export default router;

@@ -37,23 +37,26 @@ export const showCurrentUser = asyncWrapper(async (req, res, next) => {
 
 // update user
 export const updateUser = asyncWrapper(async (req, res, next) => {
-    const {name, email} = req.body
+    const {name, email, mobile} = req.body
     
-    if(!name && !email) {
-        return next(new ApiError(400, 'Required fields missing'))
-    }
     const user = await User.findOne({_id: req.user.id}).select('-password')
+    if (!user) {
+        throw next(new ApiError(400, "User does not exist"))
+    }
     if(name) {
         user.name = name
     }
     if(email) {
         user.email = email
     }
+    if(mobile) {
+        user.mobile = mobile
+    }
     await user.save()
 
-    const token = createJwtToken(user._id)
+    // const token = createJwtToken(user._id)
  
-    res.status(200).json({success: true, message: user, token})
+    res.status(200).json({success: true, message: "updated successfully", user})
 })
 
 // update user password
@@ -63,7 +66,6 @@ export const updateUserPassword = asyncWrapper(async (req, res, next) => {
         return next(new ApiError(400, 'required field missing'))
     }
     const user = await User.findOne({_id: req.user.id})
-
     const verifyPassword = await user.comparePassword(oldPassword)
     if(!verifyPassword){
         return next(new ApiError(400, 'password does not match'))
