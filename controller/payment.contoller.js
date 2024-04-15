@@ -81,10 +81,10 @@ const verifypayment = async (req, res) => {
             console.error("Error updating order:", error);
             // Handle error appropriately
         }
-        res.redirect("https://digistore-iota.vercel.app/success");
+        res.redirect("https://digistore-mauve.vercel.app//success");
     } else {
         await Order.findOneAndDelete({ order_id: razorpay_order_id });
-        res.redirect("https://digistore-iota.vercel.app/failed");
+        res.redirect("https://digistore-mauve.vercel.app//failed");
     }
 };
 
