@@ -75,16 +75,16 @@ const verifypayment = async (req, res) => {
             order.cartItems.map(async (item) => {
                 const product = await Product.findOne({ _id: item.product });
                 product.quantity -= Number(item.quantity);
-                await product.save()
+                await product.save();
             });
         } catch (error) {
             console.error("Error updating order:", error);
             // Handle error appropriately
         }
-        res.redirect("http://localhost:5173/success");
+        res.redirect("https://digistore-iota.vercel.app/success");
     } else {
         await Order.findOneAndDelete({ order_id: razorpay_order_id });
-        res.redirect("http://localhost:5173/failed");
+        res.redirect("https://digistore-iota.vercel.app/failed");
     }
 };
 
