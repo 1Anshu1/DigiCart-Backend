@@ -33,9 +33,6 @@ const productSchema = new Schema(
       type: String,
       required: [true, 'Please provide brand'],
     },
-    colors: {
-      type: [String],
-    },
     featured: {
       type: Boolean,
       default: false,
